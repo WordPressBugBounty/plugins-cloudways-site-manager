@@ -5,7 +5,7 @@ Plugin URI: https://www.cloudways.com
 Description: The easiest way to manage your sites on Cloudways
 Author: Cloudways
 Author URI: https://www.cloudways.com
-Version: 6.37
+Version: 6.47
 Network: True
 License: GPLv2 or later
 License URI: [http://www.gnu.org/licenses/gpl-2.0.html](http://www.gnu.org/licenses/gpl-2.0.html)

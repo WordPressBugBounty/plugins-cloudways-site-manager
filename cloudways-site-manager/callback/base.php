@@ -5,7 +5,7 @@ if (!class_exists('CWMGRCallbackBase')) :
 
 class CWMGRCallbackBase {
 
-	public static $wing_infos = array("MANAGE_WING_VERSION" => '1.8',
+	public static $wing_infos = array("MANAGE_WING_VERSION" => '2.0',
 		"ACTLOG_WING_VERSION" => '1.0',
 		"UPGRADER_WING_VERSION" => '1.1',
 		"BRAND_WING_VERSION" => '1.1',
@@ -15,7 +15,7 @@ class CWMGRCallbackBase {
 		"FS_WING_VERSION" => '1.4',
 		"INFO_WING_VERSION" => '2.7',
 		"WATCH_WING_VERSION" => '1.6',
-		"FS_WRITE_WING_VERSION" => '1.1',
+		"FS_WRITE_WING_VERSION" => '1.2',
 		"FS_WRITE_WING_VERSION" => '1.2',
 		);
 

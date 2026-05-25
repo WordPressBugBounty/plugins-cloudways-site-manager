@@ -11,7 +11,7 @@ if (!class_exists('CWMGRInfo')) :
 		public $ip_header_option = 'cwmgripheader';
 		public $brand_option = 'cwmbrand';
 		public $wp_lp_whitelabel_option = 'cwmgrLpWhitelabelConf';
-		public $version = '6.37';
+		public $version = '6.47';
 		public $webpage = 'https://www.cloudways.com';
 		public $appurl = 'https://app.wpremote.com';
 		public $slug = 'cloudways-site-manager/cloudways_site_manager.php';
