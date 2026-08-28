@@ -3,7 +3,7 @@ Tags: Cloudways
 Requires at least: 4.0
 Tested up to: 7.1
 Requires PHP: 7.0
-Stable tag: 6.65
+Stable tag: 6.72
 License: GPLv2 or later
 License URI: [http://www.gnu.org/licenses/gpl-2.0.html](http://www.gnu.org/licenses/gpl-2.0.html)
 
@@ -32,6 +32,9 @@ Co-developed with WP Remote.
 Need help? Contact us at [https://tickets.cloudways.com/hc/en-us/requests/new](https://tickets.cloudways.com/hc/en-us/requests/new)
 
 == Changelog ==
+
+= 6.72 =
+* Tweak: Added validation checks for input params.
 
 = 6.65 =
 * Improvement: Enhanced secret generation using the secure random_int function.
