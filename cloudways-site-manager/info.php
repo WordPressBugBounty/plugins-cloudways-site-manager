@@ -11,7 +11,7 @@ if (!class_exists('CWMGRInfo')) :
 		public $ip_header_option = 'cwmgripheader';
 		public $brand_option = 'cwmbrand';
 		public $wp_lp_whitelabel_option = 'cwmgrLpWhitelabelConf';
-		public $version = '6.72';
+		public $version = '6.81';
 		public $webpage = 'https://www.cloudways.com';
 		public $appurl = 'https://app.wpremote.com';
 		public $slug = 'cloudways-site-manager/cloudways_site_manager.php';
@@ -36,6 +36,14 @@ if (!class_exists('CWMGRInfo')) :
 				return $bvconfig['db_version'];
 			}
 			return false;
+		}
+
+		# The server leases capture for a few days at a time; a stale configuration
+		# registers nothing.
+		public function isActivityLogActive() {
+			$config = isset($this->config['activity_log']) ? $this->config['activity_log'] : null;
+			return $this->hasValidDBVersion() && is_array($config) && !empty($config['hooks']) &&
+				isset($config['enabled_until']) && is_numeric($config['enabled_until']) && $config['enabled_until'] > time();
 		}
 
 		public function hasValidDBVersion() {
@@ -232,11 +240,15 @@ if (!class_exists('CWMGRInfo')) :
 		}
 
 		public function info() {
-			return array(
+			$info = array(
 				"bvversion" => $this->version,
 				"sha1" => "true",
 				"plugname" => $this->plugname
 			);
+			if (isset($GLOBALS['bv_mu_versions'][$this->plugname])) {
+				$info['mu_version'] = $GLOBALS['bv_mu_versions'][$this->plugname];
+			}
+			return $info;
 		}
 	}
 endif;

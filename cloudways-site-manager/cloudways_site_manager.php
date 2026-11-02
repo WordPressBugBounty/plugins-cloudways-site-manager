@@ -5,7 +5,7 @@ Plugin URI: https://www.cloudways.com
 Description: The easiest way to manage your sites on Cloudways
 Author: Cloudways
 Author URI: https://www.cloudways.com
-Version: 6.72
+Version: 6.81
 Network: True
 License: GPLv2 or later
 License URI: [http://www.gnu.org/licenses/gpl-2.0.html](http://www.gnu.org/licenses/gpl-2.0.html)
@@ -62,6 +62,7 @@ register_deactivation_hook(__FILE__, array($wp_action, 'deactivate'));
 
 add_action('wp_footer', array($wp_action, 'footerHandler'), 100);
 add_action('cwmgr_clear_bv_services_config', array($wp_action, 'clear_bv_services_config'));
+add_action('cwmgr_clear_mu_plugin', array($wp_action, 'clear_mu_plugin'));
 
 ##SOADDUNINSTALLACTION##
 
@@ -101,14 +102,11 @@ if ((array_key_exists('bvreqmerge', $_POST)) || (array_key_exists('bvreqmerge', 
 
 ##REMOVE_BV_PRELOAD_MODULE##
 ##PHP_ERROR_MONITORING_MODULE##
-if ($bvinfo->hasValidDBVersion()) {
-	if ($bvinfo->isServiceActive('activity_log')) {
-		require_once dirname( __FILE__ ) . '/wp_actlog.php';
-		$bvconfig = $bvinfo->config;
-		$actlog = new BVWPActLog($bvdb, $bvsettings, $bvinfo, $bvconfig['activity_log']);
-		$actlog->init();
-	}
+require_once dirname( __FILE__ ) . '/wp_actlog.php';
+$actlog = new BVWPActLog($bvdb, $bvsettings, $bvinfo, $bvinfo->isActivityLogActive() ? $bvinfo->config['activity_log'] : array());
+$actlog->init();
 
+if ($bvinfo->hasValidDBVersion()) {
 	##MAINTENANCEMODULE##
 }
 
@@ -147,8 +145,16 @@ if (CWMGRHelper::getRawParam('REQUEST', 'bvplugname') == "cloudways_wp_manager")
 				$response->terminate($request->corruptedParamsResp());
 			}
 			$request->params = $params;
+			if (isset($request->pagenow)) {
+				$GLOBALS['pagenow'] = $request->pagenow;
+				if ($request->is_admin_ajax) {
+					$_SERVER['PHP_SELF'] = dirname($_SERVER['PHP_SELF']) . '/' . $request->pagenow;
+				}
+			}
 			$callback_handler = new CWMGRCallbackHandler($bvdb, $bvsettings, $bvsiteinfo, $request, $account, $response);
-			if ($request->is_aftershutdown) {
+			if ($request->is_update_core_page) {
+				add_action('load-update-core.php', array($callback_handler, 'execute'), PHP_INT_MAX);
+			} else if ($request->is_aftershutdown) {
 				$callback_handler->deferExecutionUntilShutdown();
 			} else if ($request->is_afterload) {
 				add_action('wp_loaded', array($callback_handler, 'execute'));

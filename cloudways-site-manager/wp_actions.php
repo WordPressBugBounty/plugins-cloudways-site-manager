@@ -43,6 +43,8 @@ if (!class_exists('CWMGRWPAction')) :
 			##CLEARDYNSYNCCONFIG##
 			##CLEARCACHECONFIG##
 			do_action('cwmgr_clear_bv_services_config');
+			do_action('cwmgr_clear_mu_plugin');
+			do_action('cwmgr_clear_actlog_config');
 			##CLEAR_WP_2FA_CONFIG##
 			##REMOVE_BV_PRELOAD_ACTION##
 			##CLEAR_PHP_ERROR_CONFIG##
@@ -51,6 +53,16 @@ if (!class_exists('CWMGRWPAction')) :
 		public function clear_bv_services_config() {
 			$this->settings->deleteOption($this->bvinfo->services_option_name);
 		}
+
+		public function clear_mu_plugin() {
+			if (defined('WPMU_PLUGIN_DIR')) {
+				$mu_plugin_file = WPMU_PLUGIN_DIR . '/0-cloudways-site-manager-mu-plugin.php';
+				if (file_exists($mu_plugin_file)) {
+					@unlink($mu_plugin_file);
+				}
+			}
+		}
+
 
 		##CLEAR_WP_2FA_CONFIG_FUNCTION##
 
